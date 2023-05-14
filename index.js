@@ -10,7 +10,7 @@ app.use(cors()
 require('./config/config'); 
 app.use("/api",adminRouter)    
 app.use('/api',StudentRoute)
-
+app.use("/coursepic", express.static("./assets/admin/course_upload"));
 
 
 
