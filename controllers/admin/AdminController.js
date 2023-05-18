@@ -1,5 +1,6 @@
 const InstructorRegisterSchema=require('../../models/admin/InstructorModel')
-const CourseSchema=require("../../models/admin/Add_Course")
+const CourseSchema=require("../../models/admin/Add_Course");
+const Enquiry_adminSchema=require("../../models/admin/Enquiry_admin")
 
 const createInstructor=async(req,resp)=>{
     try { 
@@ -63,6 +64,15 @@ const getInstructor=async(req,res)=>{
     res.send(data);
 }
 
+const deleteInstructor= async (req, resp) => {
+  try {
+    console.log(req.params);
+    let data = await Users_RegisterSchema.deleteOne(req.params);
+    resp.send(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
 const createCourse= async(req,resp)=>{
   try { 
     let img = req.file.filename;
@@ -119,4 +129,68 @@ const getCourse=async(req,res)=>{
 
   res.send(data);
 }
-module.exports={createInstructor, getInstructor,createCourse,getCourse}
+
+ const deleteCourse= async (req, resp) => {
+  try {
+    console.log(req.params);
+    let data = await Users_RegisterSchema.deleteOne(req.params);
+    resp.send(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+const createEnquiry=async(req,resp)=>{
+  try { 
+      
+   const {name,fname,address,  dob, epx_join,course,contact, email,gender, counseller, note}=req.body;
+   
+      
+     const usermail = await Enquiry_adminSchema.findOne({ contact: contact });
+     console.log(usermail);
+     if (usermail) {
+       resp.status(404).json({
+         code: 404,
+         message: "user aleready exist....  ",
+         data: [],
+         error: false,
+         status: false,
+       });
+     } else {
+       let data = new Enquiry_adminSchema({
+        name,fname,address,  dob, epx_join,course,contact, email,gender, counseller, note
+    
+       });
+      
+       let result = await data.save();
+   
+ 
+       resp.status(200).json({
+         code: 200,
+         message: "Enquiry created successfully",
+ 
+         error: false,
+         status: true,
+       });
+     }
+   } catch (err) {
+     console.log(err);
+   }
+}
+
+const getEnquiry=async(req,res)=>{
+
+  let data = await Enquiry_adminSchema.find( );
+
+  res.send(data);
+}
+const deleteEnquiry= async (req, resp) => {
+  try {
+    console.log(req.params);
+    let data = await Enquiry_adminSchema.deleteOne(req.params);
+    resp.send(data);
+  } catch (err) {
+    console.log(err);
+  }
+}
+module.exports={createInstructor, getInstructor,createCourse,getCourse,deleteCourse,deleteInstructor,createEnquiry,getEnquiry,deleteEnquiry}
