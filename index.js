@@ -11,7 +11,9 @@ require('./config/config');
 app.use("/api",adminRouter)    
 app.use('/api',StudentRoute)
 app.use("/coursepic", express.static("./assets/admin/course_upload"));
-
+aap.get("/",(req,res)=>{
+        res.send("Server Running");
+})
 
 
 app.listen(PORT, () => {
